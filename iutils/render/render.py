@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from __future__ import division
-from __future__ import print_function
+
+
 
 import cairo
 from cairo import OPERATOR_SOURCE
@@ -347,8 +347,8 @@ class Render(object):
     w,h = im.size
     rgbim = im.convert('RGB')
     res = []
-    for i in xrange(0,w):
-      for j in xrange(0,h):
+    for i in range(0,w):
+      for j in range(0,h):
         r,g,b = rgbim.getpixel((i,j))
         res.append([p(r*scale),p(g*scale),p(b*scale)])
 

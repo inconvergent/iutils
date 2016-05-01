@@ -72,7 +72,7 @@ class Base(object):
         col.data[idx].color = Color(colors[v])
         i += 1
 
-    print(num, numv, len(col.data), i)
+    print((num, numv, len(col.data), i))
 
   def move_rescale(self, set_pivot=False, pos=False, scale=False, to_origin=False):
 

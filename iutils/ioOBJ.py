@@ -118,9 +118,9 @@ def load_move_scale(
   dz = zmax - zmin
 
   print('original')
-  print('x min max, {:0.8f} {:0.8f}, dst: {:0.8f}'.format(xmin,xmax,dx))
-  print('y min max, {:0.8f} {:0.8f}, dst: {:0.8f}'.format(ymin,ymax,dy))
-  print('z min max, {:0.8f} {:0.8f}, dst: {:0.8f}'.format(zmin,zmax,dz))
+  print(('x min max, {:0.8f} {:0.8f}, dst: {:0.8f}'.format(xmin,xmax,dx)))
+  print(('y min max, {:0.8f} {:0.8f}, dst: {:0.8f}'.format(ymin,ymax,dy)))
+  print(('z min max, {:0.8f} {:0.8f}, dst: {:0.8f}'.format(zmin,zmax,dz)))
 
   vertices /= max([dx,dy,dz])
 
@@ -143,9 +143,9 @@ def load_move_scale(
   dz = zmax - zmin
 
   print('rescaled')
-  print('x min max, {:0.8f} {:0.8f}, dst: {:0.8f}'.format(xmin,xmax,dx))
-  print('y min max, {:0.8f} {:0.8f}, dst: {:0.8f}'.format(ymin,ymax,dy))
-  print('z min max, {:0.8f} {:0.8f}, dst: {:0.8f}'.format(zmin,zmax,dz))
+  print(('x min max, {:0.8f} {:0.8f}, dst: {:0.8f}'.format(xmin,xmax,dx)))
+  print(('y min max, {:0.8f} {:0.8f}, dst: {:0.8f}'.format(ymin,ymax,dy)))
+  print(('z min max, {:0.8f} {:0.8f}, dst: {:0.8f}'.format(zmin,zmax,dz)))
 
   return {
     'faces': faces,
@@ -164,7 +164,7 @@ def export(obj_name, fn, verts, tris=None, lines=None, meta=False):
     fnum = 0
 
   print('storing mesh ...')
-  print('num vertices: {:d}, num triangles: {:d}'.format(vnum, fnum))
+  print(('num vertices: {:d}, num triangles: {:d}'.format(vnum, fnum)))
 
   with open(fn, 'wb', encoding='utf8') as f:
 
@@ -209,7 +209,7 @@ def export_2d(obj_name, fn, verts, edges = None, faces = None, lines = None, met
     enum = 0
 
   print('storing mesh ...')
-  print('num vertices: {:d}, num edges: {:d}'.format(vnum, enum))
+  print(('num vertices: {:d}, num edges: {:d}'.format(vnum, enum)))
 
   with open(fn, 'wb', encoding='utf8') as f:
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import division
-from __future__ import print_function
+
+
 
 from numpy.random import random
 from numpy.linalg import norm

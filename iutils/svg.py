@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
 
-from __future__ import division
-from __future__ import print_function
+
+
 
 
 def export_svg(fn, paths, size, line_with=0.1, scale_factor=None):
 
   from cairo import SVGSurface, Context
-  from ddd import spatial_sort_2d as sort
+  from .ddd import spatial_sort_2d as sort
 
   if not scale_factor:
     scale_factor = size

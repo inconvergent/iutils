@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import division
-from __future__ import print_function
+
+
 
 
 def get_mid_2d(v):
@@ -51,7 +51,7 @@ def order_edges(edges):
       ve_dict[v2] = [e]
 
   e_start = 0
-  for v,ee in ve_dict.iteritems():
+  for v,ee in ve_dict.items():
     if len(ee)<2:
       e_start = ee[0]
       break
