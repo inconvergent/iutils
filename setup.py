@@ -12,7 +12,7 @@ setup(
   license = 'MIT',
   author = '@inconvergent',
   packages = ['iutils'],
-  install_requires = ['numpy>=1.10.0', 'scipy>=1.11.0'],
+  install_requires = ['numpy>=1.10.0', 'scipy>=1.11.0', 'cairo'],
   zip_safe = True,
 )
 
