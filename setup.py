@@ -11,8 +11,11 @@ setup(
   version = '0.1.0',
   license = 'MIT',
   author = '@inconvergent',
-  packages = ['iutils'],
-  install_requires = ['numpy>=1.10.0', 'scipy>=1.11.0', 'cairo'],
+  packages = [
+    'iutils',
+    'iutils.render'
+  ],
+  install_requires = ['numpy>=1.10.0', 'scipy>=0.17.0'],
   zip_safe = True,
 )
 

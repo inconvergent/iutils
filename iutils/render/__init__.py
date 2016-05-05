@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from render import Animate
-from render import Render
+from iutils.render.render import Animate
+from iutils.render.render import Render
 
 __ALL__ = ['Animate', 'Render']
 
