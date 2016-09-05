@@ -1,15 +1,24 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+# import cairocffi as cairo
+# from cairocffi import OPERATOR_SOURCE
 
-
-
-import cairo
+import cairo as cairo
 from cairo import OPERATOR_SOURCE
 
 from numpy.random import random
-from numpy import pi, sqrt, linspace, arctan2, cos, sin, \
-  column_stack, square, array, reshape, floor
+from numpy import pi
+from numpy import sqrt
+from numpy import linspace
+from numpy import arctan2
+from numpy import cos
+from numpy import sin
+from numpy import column_stack
+from numpy import square
+from numpy import array
+# from numpy import reshape
+# from numpy import floor
 
 
 TWOPI = pi*2
@@ -24,15 +33,17 @@ class Render(object):
     self.back = back
     self.pix = 1./float(n)
 
+    self.colors = []
+    self.ncolors = 0
     self.num_img = 0
 
     self.__init_cairo()
 
   def __init_cairo(self):
 
-    sur = cairo.ImageSurface(cairo.FORMAT_ARGB32,self.n,self.n)
+    sur = cairo.ImageSurface(cairo.FORMAT_ARGB32, self.n, self.n)
     ctx = cairo.Context(sur)
-    ctx.scale(self.n,self.n)
+    ctx.scale(self.n, self.n)
 
     self.sur = sur
     self.ctx = ctx
@@ -44,11 +55,11 @@ class Render(object):
     ctx = self.ctx
 
     ctx.set_source_rgba(*self.back)
-    ctx.rectangle(0,0,1,1)
+    ctx.rectangle(0, 0, 1, 1)
     ctx.fill()
     ctx.set_source_rgba(*self.front)
 
-  def write_to_png(self,fn):
+  def write_to_png(self, fn):
 
     self.sur.write_to_png(fn)
     self.num_img += 1
@@ -64,23 +75,22 @@ class Render(object):
 
   def set_line_width(self, w):
 
-    self.line_width = w
     self.ctx.set_line_width(w)
 
-  def line(self,x1,y1,x2,y2):
+  def line(self, x1, y1, x2, y2):
 
     ctx = self.ctx
 
-    ctx.move_to(x1,y1)
-    ctx.line_to(x2,y2)
+    ctx.move_to(x1, y1)
+    ctx.line_to(x2, y2)
     ctx.stroke()
 
-  def triangle(self,x1,y1,x2,y2,x3,y3,fill=False):
+  def triangle(self, x1, y1, x2, y2, x3, y3, fill=False):
 
     ctx = self.ctx
-    ctx.move_to(x1,y1)
-    ctx.line_to(x2,y2)
-    ctx.line_to(x3,y3)
+    ctx.move_to(x1, y1)
+    ctx.line_to(x2, y2)
+    ctx.line_to(x3, y3)
     ctx.close_path()
 
     if fill:
@@ -88,7 +98,7 @@ class Render(object):
     else:
       ctx.stroke()
 
-  def random_parallelogram(self,x1,y1,x2,y2,x3,y3,grains):
+  def random_parallelogram(self, x1, y1, x2, y2, x3, y3, grains):
 
     pix = self.pix
     rectangle = self.ctx.rectangle
@@ -102,14 +112,14 @@ class Render(object):
 
     dd = v1*a1 + v2*a2
 
-    dd[:,0] += x1
-    dd[:,1] += y1
+    dd[:, 0] += x1
+    dd[:, 1] += y1
 
-    for x,y in dd:
-      rectangle(x,y,pix,pix)
+    for x, y in dd:
+      rectangle(x, y, pix, pix)
       fill()
 
-  def random_triangle(self,x1,y1,x2,y2,x3,y3,grains):
+  def random_triangle(self, x1, y1, x2, y2, x3, y3, grains):
 
     pix = self.pix
     rectangle = self.ctx.rectangle
@@ -128,14 +138,14 @@ class Render(object):
 
     dd = v1*a1 + v2*a2
 
-    dd[:,0] += x1
-    dd[:,1] += y1
+    dd[:, 0] += x1
+    dd[:, 1] += y1
 
-    for x,y in dd[mask,:]:
-      rectangle(x,y,pix,pix)
+    for x, y in dd[mask, :]:
+      rectangle(x, y, pix, pix)
       fill()
 
-  def random_circle(self,x1,y1,r,grains):
+  def random_circle(self, x1, y1, r, grains):
     """
     random points in circle. nonuniform distribution.
     """
@@ -150,11 +160,11 @@ class Render(object):
     xx = x1 + cos(the)*rad
     yy = y1 + sin(the)*rad
 
-    for x,y in zip(xx,yy):
-      rectangle(x,y,pix,pix)
+    for x, y in zip(xx, yy):
+      rectangle(x, y, pix, pix)
       fill()
 
-  def random_uniform_circle(self,x1,y1,r,grains,dst=0):
+  def random_uniform_circle(self, x1, y1, r, grains, dst=0):
 
     from helpers import darts
 
@@ -162,22 +172,22 @@ class Render(object):
     rectangle = self.ctx.rectangle
     fill = self.ctx.fill
 
-    for x,y in darts(grains,x1,y1,r,dst):
-      rectangle(x,y,pix,pix)
+    for x, y in darts(grains, x1, y1, r, dst):
+      rectangle(x, y, pix, pix)
       fill()
 
-  def dot(self,x,y):
+  def dot(self, x, y):
 
     ctx = self.ctx
     pix = self.pix
-    ctx.rectangle(x,y,pix,pix)
+    ctx.rectangle(x, y, pix, pix)
     ctx.fill()
 
-  def circle(self,x,y,r,fill=False):
+  def circle(self, x, y, r, fill=False):
 
     ctx = self.ctx
 
-    ctx.arc(x,y,r,0,TWOPI)
+    ctx.arc(x, y, r, 0, TWOPI)
     if fill:
       ctx.fill()
     else:
@@ -187,14 +197,14 @@ class Render(object):
 
     op = self.ctx.get_operator()
     self.ctx.set_operator(OPERATOR_SOURCE)
-    self.ctx.set_source_rgba(*[1,1,1,0.95])
-    self.dot(1-self.pix,1.0-self.pix)
+    self.ctx.set_source_rgba(*[1, 1, 1, 0.95])
+    self.dot(1-self.pix, 1.0-self.pix)
     self.ctx.set_operator(op)
 
   def path(self, xy):
 
     ctx = self.ctx
-    ctx.move_to(*xy[0,:])
+    ctx.move_to(*xy[0, :])
     for x in xy:
       ctx.line_to(*x)
 
@@ -205,11 +215,11 @@ class Render(object):
     ctx = self.ctx
     line_to = ctx.line_to
 
-    x,y = coords[0]
-    ctx.move_to(x,y)
+    x, y = coords[0]
+    ctx.move_to(x, y)
 
-    for x,y in coords[1:]:
-      line_to(x,y)
+    for x, y in coords[1:]:
+      line_to(x, y)
 
     ctx.close_path()
 
@@ -221,14 +231,14 @@ class Render(object):
   def circle_path(self, coords, r, fill=False):
 
     ctx = self.ctx
-    for x,y in coords:
-      ctx.arc(x,y,r,0,TWOPI)
+    for x, y in coords:
+      ctx.arc(x, y, r, 0, TWOPI)
       if fill:
         ctx.fill()
       else:
         ctx.stroke()
 
-  def circles(self,x1,y1,x2,y2,r,nmin=2):
+  def circles(self, x1, y1, x2, y2, r, nmin=2):
 
     arc = self.ctx.arc
     fill = self.ctx.fill
@@ -240,18 +250,18 @@ class Render(object):
     n = int(dd/self.pix)
     n = n if n>nmin else nmin
 
-    a = arctan2(dy,dx)
+    a = arctan2(dy, dx)
 
-    scale = linspace(0,dd,n)
+    scale = linspace(0, dd, n)
 
     xp = x1-scale*cos(a)
     yp = y1-scale*sin(a)
 
-    for x,y in zip(xp,yp):
-      arc(x,y,r,0,pi*2.)
+    for x, y in zip(xp, yp):
+      arc(x, y, r, 0, pi*2.)
       fill()
 
-  def sandstroke_orthogonal(self,xys,height=None,steps=10,grains=10):
+  def sandstroke_orthogonal(self, xys, height=None, steps=10, grains=10):
 
     pix = self.pix
     rectangle = self.ctx.rectangle
@@ -260,11 +270,11 @@ class Render(object):
     if not height:
       height = pix*10
 
-    dx = xys[:,2] - xys[:,0]
-    dy = xys[:,3] - xys[:,1]
+    dx = xys[:, 2] - xys[:, 0]
+    dy = xys[:, 3] - xys[:, 1]
 
-    aa = arctan2(dy,dx)
-    directions = column_stack([cos(aa),sin(aa)])
+    aa = arctan2(dy, dx)
+    directions = column_stack([cos(aa), sin(aa)])
     dd = sqrt(square(dx)+square(dy))
 
     aa_orth = aa + pi*0.5
@@ -344,13 +354,13 @@ class Render(object):
 
     scale = 1./255.
     im = Image.open(fn)
-    w,h = im.size
+    w, h = im.size
     rgbim = im.convert('RGB')
     res = []
-    for i in range(0,w):
-      for j in range(0,h):
-        r,g,b = rgbim.getpixel((i,j))
-        res.append([p(r*scale),p(g*scale),p(b*scale)])
+    for i in range(0, w):
+      for j in range(0, h):
+        r, g, b = rgbim.getpixel((i, j))
+        res.append([p(r*scale), p(g*scale), p(b*scale)])
 
     shuffle(res)
 
@@ -360,21 +370,22 @@ class Render(object):
 
 class Animate(Render):
 
-  def __init__(self, n, front ,back, step):
+  def __init__(self, n, front, back, step):
 
-    import gtk, gobject
+    from gi.repository import Gtk
+    from gi.repository import GObject
 
     Render.__init__(self, n, front, back)
 
-    window = gtk.Window()
+    window = Gtk.Window()
     self.window = window
     window.resize(self.n, self.n)
 
     self.step = step
 
     window.connect("destroy", self.__destroy)
-    darea = gtk.DrawingArea()
-    darea.connect("expose-event", self.expose)
+    darea = Gtk.DrawingArea()
+    # darea.connect("expose-event", self.expose)
     self.darea = darea
 
     window.add(darea)
@@ -382,25 +393,26 @@ class Animate(Render):
 
     #self.cr = self.darea.window.cairo_create()
     self.steps = 0
-    gobject.idle_add(self.step_wrap)
+    GObject.idle_add(self.step_wrap)
 
   def __destroy(self,*args):
 
-    import gtk
+    from gi.repository import Gtk
 
-    gtk.main_quit(*args)
+    Gtk.main_quit(*args)
 
   def start(self):
 
-    import gtk
+    from gi.repository import Gtk
 
-    gtk.main()
+    Gtk.main()
 
-  def expose(self,*args):
+  def expose(self, *args):
 
     #cr = self.cr
-    cr = self.darea.window.cairo_create()
-    cr.set_source_surface(self.sur,0,0)
+    # cr = self.darea.window.cairo_create()
+    cr = self.darea.get_property('window').cairo_create()
+    cr.set_source_surface(self.sur, 0, 0)
     cr.paint()
 
   def step_wrap(self):
